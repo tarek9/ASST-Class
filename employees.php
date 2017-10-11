@@ -17,7 +17,13 @@ die();
 
 
 /*this the SQL query*/
-$query = $handler->query('SELECT employees.first_name, employees.last_name, salaries.salary, titles.title, departments.dept_name FROM employees INNER JOIN salaries ON employees.emp_no = salaries.emp_no INNER JOIN titles ON employees.emp_no = titles.emp_no INNER JOIN dept_emp ON employees.emp_no = dept_emp.emp_no INNER JOIN departments ON dept_emp.dept_no = departments.dept_no ORDER BY salaries.salary DESC LIMIT 5');
+$query = $handler->query('SELECT employees.first_name, employees.last_name, salaries.salary, titles.title, departments.dept_name 
+FROM employees 
+INNER JOIN salaries ON employees.emp_no = salaries.emp_no 
+INNER JOIN titles ON employees.emp_no = titles.emp_no 
+INNER JOIN dept_emp ON employees.emp_no = dept_emp.emp_no 
+INNER JOIN departments ON dept_emp.dept_no = departments.dept_no
+WHERE titles.to_date = "9999-01-01" ORDER BY salaries.salary DESC LIMIT 5');
 
 /* fetchAll used to return an array containing all of the result set rows */
 /* FETCH_ASSOC used to return an associative array */
@@ -28,5 +34,8 @@ echo '<pre>', print_r($r), '/<pre>';
 $json = json_encode( $r );
 /* json_data converts JSON object | file_put_contents writes a string to a file */
 $json_data = json_encode($r); file_put_contents('employees.json', $json_data);
+
+/*Close PDO connection*/
+$handler = null;
 
 ?>
